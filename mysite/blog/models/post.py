@@ -6,6 +6,10 @@ STATUS = (
     (1, 'Publish')
 )
 
+class PublishedManager(models.Manager):
+    def published(self):
+        return self.filter(status=1)
+
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
@@ -14,6 +18,9 @@ class Post(models.Model):
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
+
+    objects = models.Manager() 
+    published_objects = PublishedManager() 
 
     class Meta:
         ordering = ['-created_on']
